@@ -1,0 +1,13 @@
+#demo.py 
+#class demo
+    def get_voted_sequence(self, output, filter_len=5):
+        _, frame_num, _, _ = output.shape
+        filter=torch.zeros(frame_num, frame_num,1)
+        for i in range(frame_num):
+            for j in range(filter_len):
+                if i+j-filter_len+1<0:
+                    continue
+                else:
+                    filter[i][i+j-filter_len+1][0]=1
+        print(filter)
+        return torch.nn.functional.conv1d(output.sum(dim=2), filter.cuda()).argmax(dim=0)
